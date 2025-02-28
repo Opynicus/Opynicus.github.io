@@ -13,7 +13,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2024/12/28/rocketmq-sofamq/"/>
+    <link rel="canonical" href="http://example.com/2024/11/13/limit-row-number/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -23,16 +23,16 @@
         
         <meta name="description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RocketMQ&#x2F;SofaMQ">
-<meta property="og:url" content="http://example.com/2024/12/28/rocketmq-sofamq/index.html">
+<meta property="og:title" content="MySql下limit与row_number()分页">
+<meta property="og:url" content="http://example.com/2024/11/13/limit-row-number/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Hexo Theme Redefine, Redefine Your Hexo Journey.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/redefine-og.webp">
-<meta property="article:published_time" content="2024-12-28T02:44:45.000Z">
-<meta property="article:modified_time" content="2025-02-28T14:34:10.533Z">
+<meta property="article:published_time" content="2024-11-13T13:23:13.000Z">
+<meta property="article:modified_time" content="2025-02-28T14:32:45.575Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="中间件">
+<meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/redefine-og.webp">
     
@@ -46,7 +46,7 @@
     
     <title>
         
-            RocketMQ/SofaMQ | Opynicus
+            MySql下limit与row_number()分页 | Opynicus
         
     </title>
 
@@ -312,10 +312,10 @@
 			
 			
 			
-			<img src="https://w.wallhaven.cc/full/7p/wallhaven-7p8eq3.png" alt="RocketMQ/SofaMQ" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
+			<img src="https://w.wallhaven.cc/full/p9/wallhaven-p9q1q9.png" alt="MySql下limit与row_number()分页" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75" />
 			
 			<div class="w-full flex items-center absolute bottom-0 justify-start">
-				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">RocketMQ/SofaMQ</h1>
+				<h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-semibold backdrop-blur-lg rounded-xl border border-border-color ">MySql下limit与row_number()分页</h1>
 			</div>
 			
 		</div>
@@ -336,15 +336,15 @@
 					<div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-12-28 10:44:45</span>
-        <span class="mobile">2024-12-28 10:44:45</span>
+        <span class="desktop">2024-11-13 21:23:13</span>
+        <span class="mobile">2024-11-13 21:23:13</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-02-28 22:34:10</span>
-            <span class="mobile">2025-02-28 22:34:10</span>
+            <span class="desktop">2025-02-28 22:32:45</span>
+            <span class="mobile">2025-02-28 22:32:45</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -356,7 +356,7 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a>&nbsp;
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>&nbsp;
                     </li>
                 
             </ul>
@@ -382,99 +382,24 @@
 
 
 		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-			<p>Source: DeepSeek-R1，感觉一定程度上回答得不错</p>
-<hr>
-<p>SofaMQ 在 RocketMQ 基础上的性能提升主要通过以下技术改进实现：</p>
-<h3 id="1-存储引擎优化"><a href="#1-存储引擎优化" class="headerlink" title="1. 存储引擎优化"></a><strong>1. 存储引擎优化</strong></h3><ul>
-<li><p><strong>批量存储机制</strong></p>
-<p>将多个消息批量写入磁盘，减少 IO 次数。例如，SofaMQ 引入 <strong>批量刷盘</strong>（每批次写入 1MB 数据），相比 RocketMQ 的逐条写入，IO 带宽提升 2-3 倍。</p>
-</li>
-<li><p><strong>磁盘寻址优化</strong></p>
-<p>使用 <strong>稀疏索引</strong>（Sparse Index）替代传统 B+ 树，减少消息读取时的随机 IO 次数。</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// RocketMQ：每个消息需遍历 B+ 树节点</span><br><span class="line">// SofaMQ：直接计算磁盘偏移量</span><br></pre></td></tr></table></figure></div></li>
-</ul>
-<h3 id="2-网络通信改进"><a href="#2-网络通信改进" class="headerlink" title="2. 网络通信改进"></a><strong>2. 网络通信改进</strong></h3><ul>
-<li><p><strong>自适应协议</strong></p>
-<p>支持 TCP&#x2F;UDP 混合传输：</p>
-<ul>
-<li><strong>短消息</strong>（&lt;1KB）：使用 UDP 提高吞吐量（约 20% 增益）</li>
-<li><strong>长消息</strong>（&gt;1KB）：回退到可靠的 TCP 传输</li>
-</ul>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 动态切换示例</span><br><span class="line">if (message.size &lt; 1024) &#123;</span><br><span class="line">    use UDP</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    use TCP</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p><strong>零拷贝传输</strong></p>
-<p>在生产者和消费者之间实现 <strong>内核态直传</strong>，避免用户态&#x2F;内核态数据拷贝。</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// RocketMQ：数据需经过 4 次拷贝</span><br><span class="line">// SofaMQ：通过 mmap 直接操作磁盘数据</span><br></pre></td></tr></table></figure></div></li>
-</ul>
-<h3 id="3-消息处理流程优化"><a href="#3-消息处理流程优化" class="headerlink" title="3. 消息处理流程优化"></a><strong>3. 消息处理流程优化</strong></h3><ul>
-<li><p><strong>流水线处理</strong></p>
-<p>将消息的 <strong>存储</strong>、<strong>路由</strong>、<strong>下游推送</strong> 三个阶段并行处理。</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// RocketMQ：顺序处理</span><br><span class="line">store -&gt; route -&gt; push</span><br><span class="line"></span><br><span class="line">// SofaMQ：事件驱动模型</span><br><span class="line">store | route | push</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p><strong>自适应线程池</strong></p>
-<p>根据负载动态调整消息处理线程数：</p>
-<ul>
-<li><strong>低负载</strong>：单线程高效处理</li>
-<li><strong>高负载</strong>：自动扩展至 32 核并发处理</li>
-</ul>
-</li>
-</ul>
-<h3 id="4-内存管理优化"><a href="#4-内存管理优化" class="headerlink" title="4. 内存管理优化"></a><strong>4. 内存管理优化</strong></h3><ul>
-<li><p><strong>堆外内存分配</strong></p>
-<p>使用 <strong>DirectMemory</strong>（堆外内存）存储消息，避免 JVM GC 引起的停顿。</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// RocketMQ：依赖 JVM 堆内存</span><br><span class="line">// SofaMQ：通过 sun.misc.Unsafe 实现堆外分配</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p><strong>预分配内存池</strong></p>
-<p>预先分配 1GB 大小的内存块，按 4KB 块划分，减少内存分配开销。</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 内存池示例</span><br><span class="line">ByteBufPool pool = new ByteBufPool(1024 * 1024 * 1024);</span><br></pre></td></tr></table></figure></div></li>
-</ul>
-<h3 id="5-数据序列化优化"><a href="#5-数据序列化优化" class="headerlink" title="5. 数据序列化优化"></a><strong>5. 数据序列化优化</strong></h3><ul>
-<li><p><strong>基于 Protobuf 的消息格式</strong> 相比 RocketMQ 的自定义二进制协议，Protobuf 的序列化效率提升 30%。</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// RocketMQ：自定义序列化</span><br><span class="line">message.writeTo(ByteBuffer)</span><br><span class="line"></span><br><span class="line">// SofaMQ：Protobuf 编码</span><br><span class="line">message.toByteArray()</span><br></pre></td></tr></table></figure></div></li>
-</ul>
-<h3 id="6-网络带宽优化"><a href="#6-网络带宽优化" class="headerlink" title="6. 网络带宽优化"></a><strong>6. 网络带宽优化</strong></h3><ul>
-<li><p><strong>压缩传输</strong> 对大规模日志消息启用 <strong>LZ4 压缩</strong>，减少网络传输数据量 60%。</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 压缩示例</span><br><span class="line">Compressor compressor = Lz4Factory.fastCompressor();</span><br></pre></td></tr></table></figure></div></li>
-</ul>
-<h3 id="7-锁优化"><a href="#7-锁优化" class="headerlink" title="7. 锁优化"></a><strong>7. 锁优化</strong></h3><ul>
-<li><p><strong>无锁队列</strong> 使用 <strong>MPSC（多生产者单消费者）队列</strong>，消除消息传递时的锁竞争。</p>
-<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// RocketMQ：基于 ReentrantLock 的队列</span><br><span class="line">// SofaMQ：基于 CAS 的无锁实现</span><br></pre></td></tr></table></figure></div></li>
-</ul>
-<hr>
-<h3 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a><strong>性能对比</strong></h3><table>
-<thead>
-<tr>
-<th><strong>指标</strong></th>
-<th><strong>RocketMQ</strong></th>
-<th><strong>SofaMQ</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>单节点 TPS</strong></td>
-<td>50,000</td>
-<td>150,000</td>
-</tr>
-<tr>
-<td><strong>端到端延迟</strong></td>
-<td>5ms</td>
-<td>&lt;1ms</td>
-</tr>
-<tr>
-<td><strong>消息堆积能力</strong></td>
-<td>1TB</td>
-<td>10TB</td>
-</tr>
-</tbody></table>
-<hr>
-<h3 id="关键实现细节"><a href="#关键实现细节" class="headerlink" title="关键实现细节"></a><strong>关键实现细节</strong></h3><ol>
-<li><p><strong>存储性能对比测试</strong></p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># RocketMQ：逐条写入</span></span><br><span class="line"><span class="keyword">time</span> <span class="built_in">dd</span> <span class="keyword">if</span>=/dev/zero of=test.bin bs=1M count=1000 oflag=direct</span><br><span class="line"></span><br><span class="line"><span class="comment"># SofaMQ：批量写入</span></span><br><span class="line"><span class="keyword">time</span> sofa-mq admin flush --batch-size 1024</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p><strong>网络吞吐量测试</strong></p>
-<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># RocketMQ：单线程测试</span></span><br><span class="line">netperf -H 192.168.1.100 -p 50001 -t TCP_RR</span><br><span class="line"></span><br><span class="line"><span class="comment"># SofaMQ：多线程测试</span></span><br><span class="line">sofa-mq benchmark -c 32 -t 60</span><br></pre></td></tr></table></figure></div></li>
-</ol>
-<hr>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p>SofaMQ 通过 <strong>批量存储</strong>、<strong>无锁队列</strong>、<strong>零拷贝传输</strong> 等多项技术，相较 RocketMQ 在金融场景中实现了 <strong>3 倍吞吐量</strong> 和 <strong>5 倍延迟优化</strong>。这些改进主要集中在 <strong>存储效率</strong>、<strong>网络带宽</strong> 和 <strong>内存管理</strong> 层面。</p>
+			<p>  因为某个无形的大手导致的x创改造，项目数据库需要进行更换，从IBM  DB2切换到OceanBase(MySql)。相比起来性能或是引擎优化不如原来，部分原本就是slow query直接变成sql timeout。在进过一番各种子查询和加索引优化后，得到的优化后的sql内容如下</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">  p.id,</span><br><span class="line">  p.name,</span><br><span class="line">  p.description,</span><br><span class="line">  w.wine_id,</span><br><span class="line">  w.wine_name,</span><br><span class="line">  w.vintage,</span><br><span class="line">  s.storage_id,</span><br><span class="line">  s.location,</span><br><span class="line">  sa.account_id,</span><br><span class="line">  sa.account_name,</span><br><span class="line">  wi.info_id,</span><br><span class="line">  wi.details,</span><br><span class="line">  wi.date_info</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">  (</span><br><span class="line">    <span class="keyword">SELECT</span></span><br><span class="line">      <span class="keyword">DISTINCT</span> p.id,</span><br><span class="line">      p.name,</span><br><span class="line">      p.description,</span><br><span class="line">      w.wine_id,</span><br><span class="line">      w.wine_name,</span><br><span class="line">      w.vintage,</span><br><span class="line">      s.storage_id,</span><br><span class="line">      s.location,</span><br><span class="line">      sa.account_id,</span><br><span class="line">      sa.account_name,</span><br><span class="line">      wi.info_id,</span><br><span class="line">      wi.details,</span><br><span class="line">      wi.date_info</span><br><span class="line">    <span class="keyword">FROM</span></span><br><span class="line">      portfolio</span><br><span class="line">  ) p</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> wines w <span class="keyword">ON</span> w.wine_id <span class="operator">=</span> p.wine_id</span><br><span class="line">  <span class="keyword">AND</span> w.vintage <span class="operator">=</span> p.wine_vintage</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> storage s <span class="keyword">ON</span> s.storage_id <span class="operator">=</span> p.storage_id</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> storageaccounts sa <span class="keyword">ON</span> sa.warehouse_id <span class="operator">=</span> s.warehouse_id</span><br><span class="line">  <span class="keyword">AND</span> sa.user_id <span class="operator">=</span> p.user_id</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> wineinfo wi <span class="keyword">ON</span> wi.wine_id <span class="operator">=</span> w.wine_id</span><br><span class="line">  <span class="keyword">AND</span> wi.vintage <span class="operator">=</span> w.vintage</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> orders o <span class="keyword">ON</span> o.portfolio_id <span class="operator">=</span> p.id</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> customers c <span class="keyword">ON</span> c.customer_id <span class="operator">=</span> o.customer_id</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> payments pay <span class="keyword">ON</span> pay.order_id <span class="operator">=</span> o.order_id</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> shipments sh <span class="keyword">ON</span> sh.order_id <span class="operator">=</span> o.order_id</span><br><span class="line">  <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> reviews r <span class="keyword">ON</span> r.wine_id <span class="operator">=</span> w.wine_id</span><br><span class="line">  <span class="keyword">AND</span> r.user_id <span class="operator">=</span> c.customer_id</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">  p.userID <span class="operator">=</span> <span class="string">&#x27;some_user&#x27;</span></span><br><span class="line">  <span class="keyword">AND</span> w.available <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">  <span class="keyword">AND</span> s.active <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">  <span class="keyword">AND</span> sa.status <span class="operator">=</span> <span class="string">&#x27;active&#x27;</span></span><br><span class="line">  <span class="keyword">AND</span> (</span><br><span class="line">    sa.remark <span class="keyword">like</span> concat(<span class="string">&#x27;%&#x27;</span>, <span class="string">&#x27;tst&#x27;</span>, <span class="string">&#x27;%&#x27;</span>)</span><br><span class="line">    <span class="keyword">or</span> p.remark <span class="keyword">like</span> concat(<span class="string">&#x27;%&#x27;</span>, <span class="string">&#x27;tst&#x27;</span>, <span class="string">&#x27;%&#x27;</span>)</span><br><span class="line">    <span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">  ) wi.date_info <span class="keyword">DESC</span> limit <span class="number">0</span>, <span class="number">20</span>;</span><br></pre></td></tr></table></figure></div>
+
+<p>嗯，常规情况下确实没啥问题，但是不知为什么在上述sql中存在问题（区别就是两个like + or）。</p>
+<p>order by + limit的配合，嗯，常见的组合。当时查了下执行计划，发现走的是top-n，也正常走了该走的索引，但仍然超时。</p>
+<p>然后被给了个建议，改用row_number()处理分页逻辑，修改后结果如下</p>
+<div class="code-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">  <span class="operator">*</span></span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">  (</span><br><span class="line">    <span class="keyword">select</span> p.<span class="operator">*</span>,</span><br><span class="line">    <span class="built_in">row_number</span>() <span class="keyword">over</span>() <span class="keyword">as</span> <span class="type">row</span></span><br><span class="line">    <span class="keyword">from</span></span><br><span class="line">      (</span><br><span class="line">        <span class="keyword">SELECT</span></span><br><span class="line">          p.id,</span><br><span class="line">          p.name,</span><br><span class="line">          p.description,</span><br><span class="line">          w.wine_id,</span><br><span class="line">          w.wine_name,</span><br><span class="line">          w.vintage,</span><br><span class="line">          s.storage_id,</span><br><span class="line">          s.location,</span><br><span class="line">          sa.account_id,</span><br><span class="line">          sa.account_name,</span><br><span class="line">          wi.info_id,</span><br><span class="line">          wi.details,</span><br><span class="line">          wi.date_info</span><br><span class="line">        <span class="keyword">FROM</span></span><br><span class="line">          (</span><br><span class="line">            <span class="keyword">SELECT</span></span><br><span class="line">              <span class="keyword">DISTINCT</span> p.id,</span><br><span class="line">              p.name,</span><br><span class="line">              p.description,</span><br><span class="line">              w.wine_id,</span><br><span class="line">              w.wine_name,</span><br><span class="line">              w.vintage,</span><br><span class="line">              s.storage_id,</span><br><span class="line">              s.location,</span><br><span class="line">              sa.account_id,</span><br><span class="line">              sa.account_name,</span><br><span class="line">              wi.info_id,</span><br><span class="line">              wi.details,</span><br><span class="line">              wi.date_info</span><br><span class="line">            <span class="keyword">FROM</span></span><br><span class="line">              portfolio</span><br><span class="line">          ) p</span><br><span class="line">          <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> wines w <span class="keyword">ON</span> w.wine_id <span class="operator">=</span> p.wine_id</span><br><span class="line">          <span class="keyword">AND</span> w.vintage <span class="operator">=</span> p.wine_vintage</span><br><span class="line">          <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> storage s <span class="keyword">ON</span> s.storage_id <span class="operator">=</span> p.storage_id</span><br><span class="line">          <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> storageaccounts sa <span class="keyword">ON</span> sa.warehouse_id <span class="operator">=</span> s.warehouse_id</span><br><span class="line">          <span class="keyword">AND</span> sa.user_id <span class="operator">=</span> p.user_id</span><br><span class="line">          <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> wineinfo wi <span class="keyword">ON</span> wi.wine_id <span class="operator">=</span> w.wine_id</span><br><span class="line">          <span class="keyword">AND</span> wi.vintage <span class="operator">=</span> w.vintage</span><br><span class="line">          <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> orders o <span class="keyword">ON</span> o.portfolio_id <span class="operator">=</span> p.id</span><br><span class="line">          <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> customers c <span class="keyword">ON</span> c.customer_id <span class="operator">=</span> o.customer_id</span><br><span class="line">          <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> payments pay <span class="keyword">ON</span> pay.order_id <span class="operator">=</span> o.order_id</span><br><span class="line">          <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> shipments sh <span class="keyword">ON</span> sh.order_id <span class="operator">=</span> o.order_id</span><br><span class="line">          <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> reviews r <span class="keyword">ON</span> r.wine_id <span class="operator">=</span> w.wine_id</span><br><span class="line">          <span class="keyword">AND</span> r.user_id <span class="operator">=</span> c.customer_id</span><br><span class="line">        <span class="keyword">WHERE</span></span><br><span class="line">          p.userID <span class="operator">=</span> <span class="string">&#x27;some_user&#x27;</span></span><br><span class="line">          <span class="keyword">AND</span> w.available <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">          <span class="keyword">AND</span> s.active <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">          <span class="keyword">AND</span> sa.status <span class="operator">=</span> <span class="string">&#x27;active&#x27;</span></span><br><span class="line">          <span class="keyword">AND</span> (</span><br><span class="line">            sa.remark <span class="keyword">like</span> concat(<span class="string">&#x27;%&#x27;</span>, <span class="string">&#x27;tst&#x27;</span>, <span class="string">&#x27;%&#x27;</span>)</span><br><span class="line">            <span class="keyword">or</span> p.remark <span class="keyword">like</span> concat(<span class="string">&#x27;%&#x27;</span>, <span class="string">&#x27;tst&#x27;</span>, <span class="string">&#x27;%&#x27;</span>)</span><br><span class="line">            <span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">          ) wi.date_info <span class="keyword">DESC</span></span><br><span class="line">      ) <span class="keyword">as</span> p</span><br><span class="line">  ) <span class="keyword">as</span> q</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">  q.row <span class="operator">&gt;=</span> <span class="number">0</span> ad q.row <span class="operator">&lt;</span> <span class="number">20</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></div>
+
+<p>不过令人迷惑的是只要加上这个特殊的条件判断字段(like + or + like)，使用limit处理分页就会超时，而row_number()不会超时。但查询中不带这个模糊匹配字段，则使用row_number()反而会超时， limit不会。</p>
+<p>这两种分页方式的区别在于，limit分页是通过逐行计数丢弃的方式处理分页，并非直接定位。row_number()可以通过窗口函数为结果集生成行号，然后通过子查询筛选行号范围。若<code>row_number() over(order by indexed_column)</code>中的列有索引，MySQL可能通过索引顺序生成行号，避免全表排序与临时排序。并且在offset过大的情况下，row_number()处理分页会有更明显的优势。</p>
+<p>但为什么仍然会有情况导致row_number()处理分页超时，limit反而不会呢？这里我问了下R1，它给出的可能情况是这样的：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i.imgur.com/ENyVLdN.png"
+                     
+                ></p>
+<p>但这种回答感觉也只是针对特别情况下的特别场景罢了，核心问题还是row_number()分页超时的本质是全结果集排序与临时表开销导致的，在这些特殊情况下使用limit分页反而没有问题？这种问题甚至在执行计划上也是无法看出具体差异的，或许这整段sql逻辑都应该被重写吧（。所以还是得具体情况具体分析，做好测试什么的。</p>
 
 		</div>
 
@@ -484,7 +409,7 @@
 		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
 			
 			<li class="tag-item mx-0.5">
-				<a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/">#中间件</a>&nbsp;
+				<a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>&nbsp;
 			</li>
 			
 		</ul>
@@ -496,29 +421,17 @@
 		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
 			
 			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="prev" rel="prev" href="/2024/12/31/summary-of-2024/">
+				<a class="prev" rel="prev" href="/2024/12/18/mount-google-drive-on-your-vps/">
 					<span class="left arrow-icon flex justify-center items-center">
 						<i class="fa-solid fa-chevron-left"></i>
 					</span>
 					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">我的2024</span>
+						<span class="post-nav-title-item">在你的vps上挂载google drive</span>
 						<span class="post-nav-item">Prev posts</span>
 					</span>
 				</a>
 			</div>
 			
-			
-			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-				<a class="next" rel="next" href="/2024/12/18/mount-google-drive-on-your-vps/">
-					<span class="title flex justify-center items-center">
-						<span class="post-nav-title-item">在你的vps上挂载google drive</span>
-						<span class="post-nav-item">Next posts</span>
-					</span>
-					<span class="right arrow-icon flex justify-center items-center">
-						<i class="fa-solid fa-chevron-right"></i>
-					</span>
-				</a>
-			</div>
 			
 		</div>
 		
@@ -575,8 +488,8 @@
 		<div class="post-toc-wrap">
 	<div class="post-toc">
 		<div class="toc-title">On this page</div>
-		<div class="page-title">RocketMQ/SofaMQ</div>
-		<ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E4%BC%98%E5%8C%96"><span class="nav-text">1. 存储引擎优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E6%94%B9%E8%BF%9B"><span class="nav-text">2. 网络通信改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96"><span class="nav-text">3. 消息处理流程优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BC%98%E5%8C%96"><span class="nav-text">4. 内存管理优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%95%B0%E6%8D%AE%E5%BA%8F%E5%88%97%E5%8C%96%E4%BC%98%E5%8C%96"><span class="nav-text">5. 数据序列化优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%BD%91%E7%BB%9C%E5%B8%A6%E5%AE%BD%E4%BC%98%E5%8C%96"><span class="nav-text">6. 网络带宽优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E9%94%81%E4%BC%98%E5%8C%96"><span class="nav-text">7. 锁优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%AF%B9%E6%AF%94"><span class="nav-text">性能对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="nav-text">关键实现细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol>
+		<div class="page-title">MySql下limit与row_number()分页</div>
+		
 
 	</div>
 </div>
